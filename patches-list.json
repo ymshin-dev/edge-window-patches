@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "patches": [
     {
-      "name": "Force content into display cutouts",
-      "description": "Extends app windows into notch and punch-hole areas on Android 9 and newer.",
+      "name": "Hide status bar and ignore display cutouts",
+      "description": "Hides the status bar and extends app windows into display cutouts.",
       "default": false,
       "category": null,
       "dependencies": [],

@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/ymshin-dev/edge-window-patches/compare/v1.0.0...v1.0.1) (2026-09-25)
+
+### 🐛 Bug Fixes
+
+* hide status bar and extend into display cutouts [skip ci] ([74f34b2](https://github.com/ymshin-dev/edge-window-patches/commit/74f34b229dcb19d5a3b8db6ea217c9a7bdcbb0b7))
+
 ## 1.0.0 (2026-09-25)
 
 ### 🐛 Bug Fixes
