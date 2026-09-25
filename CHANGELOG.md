@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/ymshin-dev/edge-window-patches/compare/v1.0.1...v1.0.2) (2026-09-25)
+
+### 🐛 Bug Fixes
+
+* rehide status bar after player fullscreen transitions [skip ci] ([fc4bfef](https://github.com/ymshin-dev/edge-window-patches/commit/fc4bfef05fb443e75dfe97fa4770bba31bd93734))
+
 ## [1.0.1](https://github.com/ymshin-dev/edge-window-patches/compare/v1.0.0...v1.0.1) (2026-09-25)
 
 ### 🐛 Bug Fixes
