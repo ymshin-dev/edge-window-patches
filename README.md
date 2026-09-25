@@ -41,3 +41,8 @@ The `.mpp` file is written to `patches/build/libs/`. Morphe's patcher artifacts 
 For GitHub Actions releases, add a `GPR_KEY` repository secret with a GitHub token that can read packages. `GPR_USER` is optional and defaults to the workflow actor. Keep package tokens out of committed files.
 
 The patch changes Android window policy but has not been validated against a target APK or device. Apps can retain their own inset padding, and content may overlap controls around the cutout.
+
+## Patch catalog
+
+<!-- PATCHES_START EXPANDED -->
+<!-- PATCHES_END -->
