@@ -1,3 +1,15 @@
+## [1.1.0](https://github.com/ymshin-dev/edge-window-patches/compare/v1.0.3...v1.1.0) (2026-09-25)
+
+### ✨ New Features
+
+* add configurable app font scale patch ([655208d](https://github.com/ymshin-dev/edge-window-patches/commit/655208d960b25ea455fd5c5fcc85ca17f46bb943))
+
+## [1.1.0](https://github.com/ymshin-dev/edge-window-patches/compare/v1.0.3...v1.1.0) (2026-09-25)
+
+### ✨ New Features
+
+* add configurable app font scale patch ([655208d](https://github.com/ymshin-dev/edge-window-patches/commit/655208d960b25ea455fd5c5fcc85ca17f46bb943))
+
 ## [1.0.3](https://github.com/ymshin-dev/edge-window-patches/compare/v1.0.2...v1.0.3) (2026-09-25)
 
 ### 🐛 Bug Fixes
