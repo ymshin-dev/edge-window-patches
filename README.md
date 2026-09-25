@@ -45,4 +45,15 @@ The patch changes Android window policy but has not been validated against a tar
 ## Patch catalog
 
 <!-- PATCHES_START EXPANDED -->
+> **[v1.0.0](https://github.com/ymshin-dev/edge-window-patches/releases/tag/v1.0.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;1 patches total
+<details open>
+<summary>🌐 Universal&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Force content into display cutouts](#force-content-into-display-cutouts) | Extends app windows into notch and punch-hole areas on Android 9 and newer. |  |
+
+</details>
+
 <!-- PATCHES_END -->
