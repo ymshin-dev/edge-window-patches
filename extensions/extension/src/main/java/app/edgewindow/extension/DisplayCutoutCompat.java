@@ -1,6 +1,7 @@
 package app.edgewindow.extension;
 
 import android.app.Activity;
+import android.graphics.Insets;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -19,6 +20,16 @@ public final class DisplayCutoutCompat {
     private static final int MODE_ALWAYS = 3;
     private static final Set<View> ENFORCEMENT_INSTALLED_ON =
         Collections.newSetFromMap(new WeakHashMap<View, Boolean>());
+    private static final View.OnApplyWindowInsetsListener TOP_INSET_FILTER =
+        new View.OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsets onApplyWindowInsets(View view, WindowInsets insets) {
+                if (Build.VERSION.SDK_INT >= 30) {
+                    return Api30.withoutTopSafeInsets(insets);
+                }
+                return insets;
+            }
+        };
 
     private DisplayCutoutCompat() {
     }
@@ -82,7 +93,20 @@ public final class DisplayCutoutCompat {
             applyLegacyFullscreen(window);
         }
 
+        installTopInsetFilter(activity);
         installStatusBarEnforcer(activity, window.getDecorView());
+    }
+
+    private static void installTopInsetFilter(Activity activity) {
+        if (Build.VERSION.SDK_INT < 30) return;
+
+        View contentView = activity.findViewById(android.R.id.content);
+        if (contentView == null) return;
+
+        // Remove the top safe area before it reaches the app's player/layout
+        // views, while retaining navigation-bar and gesture insets.
+        contentView.setOnApplyWindowInsetsListener(TOP_INSET_FILTER);
+        contentView.requestApplyInsets();
     }
 
     private static void installStatusBarEnforcer(final Activity activity, final View decorView) {
@@ -165,6 +189,19 @@ public final class DisplayCutoutCompat {
         static boolean isStatusBarVisible(View decorView) {
             WindowInsets insets = decorView.getRootWindowInsets();
             return insets != null && insets.isVisible(WindowInsets.Type.statusBars());
+        }
+
+        static WindowInsets withoutTopSafeInsets(WindowInsets insets) {
+            if (insets == null) return null;
+
+            int topInsetTypes = WindowInsets.Type.statusBars()
+                | WindowInsets.Type.displayCutout();
+            return new WindowInsets.Builder(insets)
+                .setInsets(topInsetTypes, Insets.NONE)
+                .setInsetsIgnoringVisibility(WindowInsets.Type.statusBars(), Insets.NONE)
+                .setVisible(WindowInsets.Type.statusBars(), false)
+                .setDisplayCutout(null)
+                .build();
         }
     }
 }

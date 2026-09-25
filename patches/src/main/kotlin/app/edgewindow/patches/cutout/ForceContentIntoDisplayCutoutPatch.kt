@@ -33,7 +33,7 @@ private const val APPLY_CUTOUT_METHOD =
 @Suppress("unused")
 val forceContentIntoDisplayCutoutPatch = bytecodePatch(
     name = "Hide status bar and ignore display cutouts",
-    description = "Hides the status bar and extends app windows into display cutouts.",
+    description = "Hides the status bar and removes top status-bar and cutout insets from app content.",
     default = false,
 ) {
     extendWith("extensions/extension.mpe")

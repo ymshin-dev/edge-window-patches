@@ -10,6 +10,7 @@ Repository: <https://github.com/ymshin-dev/edge-window-patches>
 
 - Android 9 and newer: allows the window to extend into display cutout areas.
 - Hides the status bar directly, without enabling Android's sticky immersive mode. The navigation bar remains visible.
+- Android 11 and newer: removes status-bar and display-cutout insets before dispatching them from the Activity content root to app views.
 - Reapplies the settings after resume, window-focus, and configuration changes, and when drawing detects that the app has shown the status bar again.
 
 The patch is disabled by default. Enable it only for apps where the content should use the notch or punch-hole area.
@@ -26,7 +27,7 @@ The patch is optional and must be selected in Expert mode.
 
 ## Limits
 
-This changes Android's window policy. An app can still add its own cutout or system-bar padding through its layout, inset listeners, or rendering engine, which a universal patch cannot reliably remove. Content may then remain inset or overlap important controls. Below Android 9, the patch can hide the status bar but there is no display-cutout window API.
+The inset filter reaches view layouts that use the normal window-inset dispatch path. An app can still add padding itself or read root window insets directly, which may leave the player below the punch-hole. Removing top insets can also move interactive controls close to the camera. Below Android 11, the patch can allow the window into the cutout but does not filter inset dispatch; below Android 9, it can hide the status bar but there is no display-cutout window API.
 
 ## Build
 
@@ -40,7 +41,7 @@ The `.mpp` file is written to `patches/build/libs/`. Morphe's patcher artifacts 
 
 For GitHub Actions releases, add a `GPR_KEY` repository secret with a GitHub token that can read packages. `GPR_USER` is optional and defaults to the workflow actor. Keep package tokens out of committed files.
 
-The patch changes Android window policy but has not been validated against a target APK or Galaxy device. Apps can retain their own inset padding, and content may overlap controls around the cutout.
+The patch changes Android window policy and inset dispatch but has not been validated against a target APK or Galaxy device.
 
 ## Patch catalog
 
