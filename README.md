@@ -15,15 +15,17 @@ Repository: <https://github.com/ymshin-dev/edge-window-patches>
 
 The patch is disabled by default. Enable it only for apps where the content should use the notch or punch-hole area.
 
+**Adjust app font scale** overrides only the font scale in the patched app's Activity contexts. It leaves display density and density-based layout dimensions unchanged, so it can be combined with Samsung's screen-zoom/DPI setting to keep a denser feed while making text easier to read. Set the multiplier slider between `0.5×` and `2.0×`: `1.0×` keeps the current system font scale, while `1.2×` increases it by that input factor. Android 14 and newer scale fonts nonlinearly, so the slider value does not guarantee an identical physical-size change for every text style. The patch is disabled by default; enable it only for the app whose text should change.
+
 ## Add the source in Morphe
 
-After the first GitHub release is published, open **Sources → + → Remote** in Morphe Manager and enter:
+After the updated GitHub release is published, open **Sources → + → Remote** in Morphe Manager and enter:
 
 ```text
 github.com/ymshin-dev/edge-window-patches
 ```
 
-The patch is optional and must be selected in Expert mode.
+Patches are optional and must be selected in Expert mode. Apply **Adjust app font scale** only to the target app (for example, YouTube).
 
 ## Limits
 
@@ -41,18 +43,19 @@ The `.mpp` file is written to `patches/build/libs/`. Morphe's patcher artifacts 
 
 For GitHub Actions releases, add a `GPR_KEY` repository secret with a GitHub token that can read packages. `GPR_USER` is optional and defaults to the workflow actor. Keep package tokens out of committed files.
 
-The patch changes Android window policy and inset dispatch but has not been validated against a target APK or Galaxy device.
+The cutout patch changes Android window policy and inset dispatch but has not been validated against a target APK or Galaxy device. The font-scale patch relies on app text being laid out with Android's font-scaling support; text rendered with fixed pixel sizes may not change. It has not been validated against a target APK or Galaxy device.
 
 ## Patch catalog
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.0.3](https://github.com/ymshin-dev/edge-window-patches/releases/tag/v1.0.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;1 patches total
+> **[v1.0.3](https://github.com/ymshin-dev/edge-window-patches/releases/tag/v1.0.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;2 patches total
 <details open>
-<summary>🌐 Universal&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary>🌐 Universal&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
+| [Adjust app font scale](#adjust-app-font-scale) | Scales text in this app without changing display density or layout sizing. | • Font scale multiplier |
 | [Hide status bar and ignore display cutouts](#hide-status-bar-and-ignore-display-cutouts) | Hides the status bar and removes top status-bar and cutout insets from app content. |  |
 
 </details>
