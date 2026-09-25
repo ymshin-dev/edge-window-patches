@@ -6,9 +6,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import java.lang.reflect.Method;
-
-/** Runtime helper called from each patched Activity's onResume method. */
+/** Runtime helper that hides the status bar and permits content in display cutouts. */
 public final class DisplayCutoutCompat {
     private static final int MODE_SHORT_EDGES = 1;
     // LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS was added in API 30.
@@ -18,7 +16,7 @@ public final class DisplayCutoutCompat {
     }
 
     public static void apply(final Activity activity) {
-        if (activity == null || Build.VERSION.SDK_INT < 28) return;
+        if (activity == null) return;
 
         try {
             applyToWindow(activity);
@@ -53,38 +51,65 @@ public final class DisplayCutoutCompat {
         Window window = activity.getWindow();
         if (window == null) return;
 
-        WindowManager.LayoutParams attributes = window.getAttributes();
-        int requestedMode = Build.VERSION.SDK_INT >= 30 ? MODE_ALWAYS : MODE_SHORT_EDGES;
-        if (attributes.layoutInDisplayCutoutMode != requestedMode) {
-            attributes.layoutInDisplayCutoutMode = requestedMode;
-            window.setAttributes(attributes);
+        if (Build.VERSION.SDK_INT >= 28) {
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            int requestedMode = Build.VERSION.SDK_INT >= 30 ? MODE_ALWAYS : MODE_SHORT_EDGES;
+            if (attributes.layoutInDisplayCutoutMode != requestedMode) {
+                attributes.layoutInDisplayCutoutMode = requestedMode;
+                window.setAttributes(attributes);
+            }
         }
 
         if (Build.VERSION.SDK_INT >= 30) {
-            if (!setDecorFitsSystemWindows(window)) {
-                applyLegacyEdgeToEdgeFlags(window.getDecorView());
+            try {
+                if (!Api30.apply(window)) {
+                    applyLegacyFullscreen(window);
+                }
+            } catch (RuntimeException ignored) {
+                applyLegacyFullscreen(window);
+            } catch (LinkageError ignored) {
+                applyLegacyFullscreen(window);
             }
         } else {
-            applyLegacyEdgeToEdgeFlags(window.getDecorView());
-        }
-    }
-
-    private static boolean setDecorFitsSystemWindows(Window window) {
-        try {
-            Method method = Window.class.getMethod("setDecorFitsSystemWindows", boolean.class);
-            method.invoke(window, false);
-            return true;
-        } catch (ReflectiveOperationException | RuntimeException ignored) {
-            return false;
+            applyLegacyFullscreen(window);
         }
     }
 
     @SuppressWarnings("deprecation")
-    private static void applyLegacyEdgeToEdgeFlags(View decorView) {
+    private static void applyLegacyFullscreen(Window window) {
+        if (Build.VERSION.SDK_INT < 16) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            return;
+        }
+
+        View decorView = window.getDecorView();
         if (decorView == null) return;
 
         int flags = decorView.getSystemUiVisibility();
-        flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+        flags |= View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+        if (Build.VERSION.SDK_INT >= 19) {
+            flags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        }
         decorView.setSystemUiVisibility(flags);
+    }
+
+    /** API 30 references are isolated so older Android releases can load this helper. */
+    private static final class Api30 {
+        private Api30() {
+        }
+
+        static boolean apply(Window window) {
+            window.setDecorFitsSystemWindows(false);
+            android.view.WindowInsetsController controller = window.getInsetsController();
+            if (controller == null) return false;
+
+            controller.setSystemBarsBehavior(
+                android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            );
+            controller.hide(android.view.WindowInsets.Type.statusBars());
+            return true;
+        }
     }
 }

@@ -31,8 +31,8 @@ private const val APPLY_CUTOUT_METHOD =
  */
 @Suppress("unused")
 val forceContentIntoDisplayCutoutPatch = bytecodePatch(
-    name = "Force content into display cutouts",
-    description = "Extends app windows into notch and punch-hole areas on Android 9 and newer.",
+    name = "Hide status bar and ignore display cutouts",
+    description = "Hides the status bar and extends app windows into display cutouts.",
     default = false,
 ) {
     extendWith("extensions/extension.mpe")
