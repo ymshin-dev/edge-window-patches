@@ -8,6 +8,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.ClassDef
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
+import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
 private const val ANDROID_ACTIVITY = "Landroid/app/Activity;"
 private val platformActivityBases = setOf(
@@ -45,6 +46,61 @@ val forceContentIntoDisplayCutoutPatch = bytecodePatch(
 
         if (activities.isEmpty()) {
             throw PatchException("No application Activity classes were found")
+        }
+
+        fun hookActivityCallback(
+            classDef: ClassDef,
+            methodName: String,
+            parameterType: String,
+        ) {
+            val callback = classDef.methods.firstOrNull { method ->
+                method.name == methodName &&
+                    method.parameterTypes.size == 1 &&
+                    method.parameterTypes[0].toString() == parameterType &&
+                    method.returnType == "V"
+            }
+
+            if (callback != null) {
+                if (callback.implementation != null) {
+                    mutableClassDefBy(classDef).methods
+                        .first { method ->
+                            method.name == methodName &&
+                                method.parameterTypes.size == 1 &&
+                                method.parameterTypes[0].toString() == parameterType &&
+                                method.returnType == "V"
+                        }
+                        .addInstructions(0, APPLY_CUTOUT_METHOD)
+                }
+                return
+            }
+
+            val parentType = classDef.superclass ?: return
+            val parentIsPackagedActivity = classesByType[parentType]
+                ?.isActivityClass(classesByType) == true
+            if (parentIsPackagedActivity) return
+
+            val activity = mutableClassDefBy(classDef)
+            val inheritedCallback = ImmutableMethod(
+                activity.type,
+                methodName,
+                listOf(ImmutableMethodParameter(parameterType, emptySet(), null)),
+                "V",
+                AccessFlags.PUBLIC.value,
+                null,
+                null,
+                MutableMethodImplementation(2),
+            ).toMutable().apply {
+                addInstructions(
+                    0,
+                    """
+                        invoke-super/range { p0 .. p1 }, $parentType->$methodName($parameterType)V
+                        $APPLY_CUTOUT_METHOD
+                        return-void
+                    """.trimIndent(),
+                )
+            }
+
+            activity.methods.add(inheritedCallback)
         }
 
         var hookedActivities = 0
@@ -102,6 +158,19 @@ val forceContentIntoDisplayCutoutPatch = bytecodePatch(
 
             activity.methods.add(inheritedOnResume)
             hookedActivities++
+        }
+
+        activities.forEach { classDef ->
+            hookActivityCallback(
+                classDef,
+                "onWindowFocusChanged",
+                "Z",
+            )
+            hookActivityCallback(
+                classDef,
+                "onConfigurationChanged",
+                "Landroid/content/res/Configuration;",
+            )
         }
 
         if (hookedActivities == 0) {

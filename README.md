@@ -6,11 +6,11 @@ Repository: <https://github.com/ymshin-dev/edge-window-patches>
 
 ## Patch
 
-**Hide status bar and ignore display cutouts** changes every app-defined `Activity` window when it resumes:
+**Hide status bar and ignore display cutouts** changes every app-defined `Activity` window:
 
 - Android 9 and newer: allows the window to extend into display cutout areas.
-- Hides the status bar independently of the app's or Samsung's immersive-mode setting. The navigation bar remains visible.
-- Reapplies the window settings once after `onResume`, because some apps change them during that callback.
+- Hides the status bar directly, without enabling Android's sticky immersive mode. The navigation bar remains visible.
+- Reapplies the settings after resume, window-focus, and configuration changes, and when drawing detects that the app has shown the status bar again.
 
 The patch is disabled by default. Enable it only for apps where the content should use the notch or punch-hole area.
 
