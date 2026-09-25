@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-09-25T02:59:16",
-  "description": "## [1.0.2](https://github.com/ymshin-dev/edge-window-patches/compare/v1.0.1...v1.0.2) (2026-09-25)\n\n### 🐛 Bug Fixes\n\n* rehide status bar after player fullscreen transitions [skip ci] ([fc4bfef](https://github.com/ymshin-dev/edge-window-patches/commit/fc4bfef05fb443e75dfe97fa4770bba31bd93734))",
-  "download_url": "https://github.com/ymshin-dev/edge-window-patches/releases/download/v1.0.2/patches-1.0.2.mpp",
+  "created_at": "2026-09-25T03:12:43",
+  "description": "## [1.0.3](https://github.com/ymshin-dev/edge-window-patches/compare/v1.0.2...v1.0.3) (2026-09-25)\n\n### 🐛 Bug Fixes\n\n* remove cutout insets from app content [skip ci] ([3fd102f](https://github.com/ymshin-dev/edge-window-patches/commit/3fd102f925b7c93ce4ce8e17d572ae87b484266a))",
+  "download_url": "https://github.com/ymshin-dev/edge-window-patches/releases/download/v1.0.3/patches-1.0.3.mpp",
   "signature_download_url": "",
-  "version": "1.0.2"
+  "version": "1.0.3"
 }

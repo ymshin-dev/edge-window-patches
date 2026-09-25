@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "patches": [
     {
       "name": "Hide status bar and ignore display cutouts",
-      "description": "Hides the status bar and extends app windows into display cutouts.",
+      "description": "Hides the status bar and removes top status-bar and cutout insets from app content.",
       "default": false,
       "category": null,
       "dependencies": [],

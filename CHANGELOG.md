@@ -1,3 +1,9 @@
+## [1.0.3](https://github.com/ymshin-dev/edge-window-patches/compare/v1.0.2...v1.0.3) (2026-09-25)
+
+### 🐛 Bug Fixes
+
+* remove cutout insets from app content [skip ci] ([3fd102f](https://github.com/ymshin-dev/edge-window-patches/commit/3fd102f925b7c93ce4ce8e17d572ae87b484266a))
+
 ## [1.0.2](https://github.com/ymshin-dev/edge-window-patches/compare/v1.0.1...v1.0.2) (2026-09-25)
 
 ### 🐛 Bug Fixes
