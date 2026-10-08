@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/[secure]/edge-window-patches/compare/v1.1.1...v1.2.0) (2026-10-08)
+
+### ✨ New Features
+
+* split hide status bar patch into YouTube and universal variants ([e70055f](https://github.com/[secure]/edge-window-patches/commit/e70055fbf3dbacde435c4ff2f3068cb638c62a53))
+
 ## [1.1.1](https://github.com/ymshin-dev/edge-window-patches/compare/v1.1.0...v1.1.1) (2026-09-26)
 
 ### 🐛 Bug Fixes
