@@ -1,3 +1,9 @@
+## [1.3.0](https://github.com/[secure]/edge-window-patches/compare/v1.2.1...v1.3.0) (2026-10-08)
+
+### ✨ New Features
+
+* add opt-in inset diagnostics for cutout shift tracking ([e07a92d](https://github.com/[secure]/edge-window-patches/commit/e07a92dcb191fb6df129e536af8daecf2481d4f0))
+
 ## [1.2.1](https://github.com/[secure]/edge-window-patches/compare/v1.2.0...v1.2.1) (2026-10-08)
 
 ### 🐛 Bug Fixes
