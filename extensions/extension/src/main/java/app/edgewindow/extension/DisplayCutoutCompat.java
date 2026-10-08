@@ -80,6 +80,22 @@ public final class DisplayCutoutCompat {
         }
 
         if (Build.VERSION.SDK_INT >= 30) {
+            // Chromium browsers re-fit their window on focus changes (for example
+            // when the omnibox is activated on the new tab page). Excluding the
+            // status bars and cutouts from the window fitting makes any such
+            // re-fit a no-op, regardless of how the app sets the decor fits flag.
+            try {
+                if (window.getAttributes().getFitInsetsTypes() != 0) {
+                    WindowManager.LayoutParams attributes = window.getAttributes();
+                    attributes.setFitInsetsTypes(0);
+                    window.setAttributes(attributes);
+                }
+            } catch (RuntimeException ignored) {
+                // A window that rejects attribute changes must not break the app.
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= 30) {
             try {
                 if (!Api30.apply(window)) {
                     applyLegacyFullscreen(window);
@@ -189,6 +205,7 @@ public final class DisplayCutoutCompat {
             // pushes content down while the status bar itself stays hidden. With
             // the root filter installed nothing may pad the window top, so any
             // padding found during drawing means the window changed underneath.
+            if (window.getAttributes().getFitInsetsTypes() != 0) return true;
             if (decorView.getPaddingTop() != 0) return true;
             return Api30.isStatusBarVisible(decorView);
         }
@@ -241,7 +258,10 @@ public final class DisplayCutoutCompat {
                 | WindowInsets.Type.displayCutout();
             return new WindowInsets.Builder(insets)
                 .setInsets(topInsetTypes, Insets.NONE)
-                .setInsetsIgnoringVisibility(WindowInsets.Type.statusBars(), Insets.NONE)
+                // Also strip the safe insets that remain readable while a bar is
+                // hidden, so consumers that lay out against getInsetsIgnoringVisibility
+                // (Chromium does) cannot pad their content with the cutout height.
+                .setInsetsIgnoringVisibility(topInsetTypes, Insets.NONE)
                 .setVisible(WindowInsets.Type.statusBars(), false)
                 .setDisplayCutout(null)
                 .build();
