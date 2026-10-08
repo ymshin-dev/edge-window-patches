@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/[secure]/edge-window-patches/compare/v1.2.0...v1.2.1) (2026-10-08)
+
+### 🐛 Bug Fixes
+
+* stop Chromium window re-fits from padding below the cutout ([92e994b](https://github.com/[secure]/edge-window-patches/commit/92e994b067f1244f6b3e834a2888dc7271c4ece3))
+
 ## [1.2.0](https://github.com/[secure]/edge-window-patches/compare/v1.1.1...v1.2.0) (2026-10-08)
 
 ### ✨ New Features
