@@ -93,20 +93,57 @@ public final class DisplayCutoutCompat {
             applyLegacyFullscreen(window);
         }
 
-        installTopInsetFilter(activity);
+        installTopInsetFilters(activity);
         installStatusBarEnforcer(activity, window.getDecorView());
     }
 
-    private static void installTopInsetFilter(Activity activity) {
+    private static void installTopInsetFilters(Activity activity) {
         if (Build.VERSION.SDK_INT < 30) return;
 
-        View contentView = activity.findViewById(android.R.id.content);
-        if (contentView == null) return;
+        Window window = activity.getWindow();
+        if (window == null) return;
 
-        // Remove the top safe area before it reaches the app's player/layout
-        // views, while retaining navigation-bar and gesture insets.
-        contentView.setOnApplyWindowInsetsListener(TOP_INSET_FILTER);
-        contentView.requestApplyInsets();
+        // Filter at the window root so inset consumers that read the dispatch one
+        // level above the activity content (Chromium browser chrome does) observe
+        // the same filtered insets, and keep the content-root filter for apps that
+        // replace a decorated listener after this helper applied its policy.
+        installFilter(window.getDecorView());
+        View contentView = activity.findViewById(android.R.id.content);
+        if (contentView != null && contentView != window.getDecorView()) {
+            installFilter(contentView);
+        }
+
+        // Re-dispatch so any window laid out with the previous top insets
+        // (for example a browser window re-fitted by its new tab page) is
+        // laid out again without them, and drop stale fit padding the app's
+        // relayout already applied to the window top.
+        View decorView = window.getDecorView();
+        if (decorView.getPaddingTop() != 0) {
+            try {
+                decorView.setPadding(
+                    decorView.getPaddingLeft(),
+                    0,
+                    decorView.getPaddingRight(),
+                    decorView.getPaddingBottom()
+                );
+            } catch (RuntimeException ignored) {
+                // A view that rejects padding changes must not break the app.
+            }
+        }
+        decorView.requestApplyInsets();
+    }
+
+    private static void installFilter(View root) {
+        if (root == null) return;
+
+        try {
+            // Replacing DecorView's own onApplyWindowInsets also bypasses the
+            // framework's fit-to-system-bars padding path, which is the source of
+            // the Chromium content shift under the cutout.
+            root.setOnApplyWindowInsetsListener(TOP_INSET_FILTER);
+        } catch (RuntimeException ignored) {
+            // A view that rejects listeners must not break the app.
+        }
     }
 
     private static void installStatusBarEnforcer(final Activity activity, final View decorView) {
@@ -147,6 +184,12 @@ public final class DisplayCutoutCompat {
         }
 
         if (Build.VERSION.SDK_INT >= 30) {
+            // Chromium browsers re-fit their window to the system bars on their
+            // new tab page, which pads the window top with the cutout height and
+            // pushes content down while the status bar itself stays hidden. With
+            // the root filter installed nothing may pad the window top, so any
+            // padding found during drawing means the window changed underneath.
+            if (decorView.getPaddingTop() != 0) return true;
             return Api30.isStatusBarVisible(decorView);
         }
 
