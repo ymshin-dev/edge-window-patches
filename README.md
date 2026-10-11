@@ -1,6 +1,6 @@
 # Edge Window Patches
 
-An experimental universal patch source for Android apps, compatible with Morphe.
+An experimental Android patch source, compatible with Morphe.
 
 Repository: <https://github.com/ymshin-dev/edge-window-patches>
 
@@ -19,6 +19,26 @@ The patch ships in two variants:
 - **Hide status bar and ignore display cutouts (universal)** — listed for any app. It relies on a browser-safe runtime helper that installs the top-inset filter at the window root, so Chromium-based browsers (Edge, Chrome, and similar) no longer shift their whole window below the cutout on the new tab page; a window that re-fits itself to the system bars is re-applied and re-laid out. Both variants share the same runtime helper, so the fix is included in both.
 
 The patch is disabled by default. Enable only a variant of it for the app where the content should use the notch or punch-hole area. Do not enable more than one variant on the same app.
+
+**Proper Korean translation** applies DVRP's [옳은 한글 (ProperKorean)](https://dvrp-balatro-mods.pages.dev/properkorean)
+v0.7.1 to **Balatro Android 1.8**, including the supplied merged Korean/Latin
+font, translated descriptions, grammar, booster selection order, voucher
+restocking, deck labels, orbital tags and credits. It supports both
+`com.playstack.balatro.android` and the Morphe-renamed
+`com.playstack.balatro.android.morphe` package. It is disabled by default.
+
+In Morphe Manager, refresh this source, select the Balatro **1.8 APK**, enable
+**Proper Korean translation** in Expert mode, patch and install. Select
+**한국어** in Balatro's language settings. No PC Lovely DLL, Steamodded or
+external Mods folder is needed. Start from an APK without this translation;
+duplicate installations and incompatible Lua layouts are rejected.
+
+The patch edits nine Lua assets and the Korean font directly. It retains
+Android-only translation keys and existing Morphe bytecode changes; description
+lists replace completely to prevent leftover lines. Language switching remains
+available, and achievement settings are preserved. The original game files/APK
+are not included in this repository. Attribution and font notices are bundled
+with the patch; see [ProperKorean NOTICE](patches/src/main/resources/balatro/properkorean/NOTICE.md).
 
 ## Add the source in Morphe
 
@@ -48,10 +68,32 @@ For GitHub Actions releases, add a `GPR_KEY` repository secret with a GitHub tok
 
 The cutout patch changes Android window policy and inset dispatch but has not been validated against a target APK or Galaxy device.
 
+The Balatro patch was applied successfully with Morphe Desktop to the supplied
+Morphe-patched Android 1.8 APK (version code 47, game Lua 1.0.1o). All 50 Lua
+files compiled with LuaJIT. A Lua runtime harness exercised the actual patched
+`Game:set_language`, Korean/English switching, translation merging, description
+replacement and grammar helpers. APK comparison confirmed that the original
+DEX, manifest and unrelated assets were unchanged. Android device launch,
+rendering and gameplay have **not** been tested.
+
+To repeat validation with your own local APKs (LuaJIT required):
+
+```sh
+java -jar morphe-desktop.jar patch original.apk \
+  -p patches/build/libs/patches-<version>.mpp \
+  -e 'Proper Korean translation' --exclusive --unsigned -o patched.apk
+python3 scripts/validate-properkorean.py original.apk patched.apk
+```
+
+To reproduce the imported mod resources, download the official v0.7.1 ZIP linked
+in the NOTICE and run `python3 scripts/import-properkorean.py ProperKorean.zip`.
+The importer checks its SHA-256 and generates the Android Lua edits. It never
+imports a game APK or complete game Lua files.
+
 ## Patch catalog
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.3.0](https://github.com/ymshin-dev/edge-window-patches/releases/tag/v1.3.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;2 patches total
+> **[v1.3.0](https://github.com/ymshin-dev/edge-window-patches/releases/tag/v1.3.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;3 patches total
 <details open>
 <summary>📦 YouTube&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
@@ -59,6 +101,36 @@ The cutout patch changes Android window policy and inset dispatch but has not be
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
 | [Hide status bar and ignore display cutouts](#hide-status-bar-and-ignore-display-cutouts) | Hides the status bar and removes top status-bar and cutout insets from app content. |  |
+
+</details>
+
+<details open>
+<summary>📦 Balatro&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.8 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Proper Korean translation](#proper-korean-translation) | Applies DVRP's ProperKorean (옳은 한글) translation, font, grammar and UI fixes to Balatro. |  |
+
+</details>
+
+<details open>
+<summary>📦 Balatro&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.8 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Proper Korean translation](#proper-korean-translation) | Applies DVRP's ProperKorean (옳은 한글) translation, font, grammar and UI fixes to Balatro. |  |
 
 </details>
 
