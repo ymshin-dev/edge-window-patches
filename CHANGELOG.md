@@ -1,3 +1,9 @@
+## [1.4.0](https://github.com/ymshin-dev/edge-window-patches/compare/v1.3.0...v1.4.0) (2026-10-11)
+
+### ✨ New Features
+
+* add ProperKorean translation patch for Balatro Android ([dad2362](https://github.com/ymshin-dev/edge-window-patches/commit/dad23623039a90c684008db6426da0db7ee4e204))
+
 ## [1.3.0](https://github.com/[secure]/edge-window-patches/compare/v1.2.1...v1.3.0) (2026-10-08)
 
 ### ✨ New Features
