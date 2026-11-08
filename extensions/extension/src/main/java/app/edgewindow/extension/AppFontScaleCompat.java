@@ -2,7 +2,6 @@ package app.edgewindow.extension;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.res.Configuration;
 
 import java.util.Collections;
@@ -29,34 +28,28 @@ public final class AppFontScaleCompat {
                 return base;
             }
 
-            if (base instanceof FontScaleContext) {
-                SCALED_ACTIVITIES.put(activity, Boolean.TRUE);
-                return base;
-            }
-
             try {
-                // Start from the context's current configuration so locale,
-                // density, and layout direction stay exactly as the app set them.
+                // Keep the framework context type intact: createConfigurationContext()
+                // returns a real ContextImpl, so app code that inspects the base context
+                // does not receive an unexpected ContextWrapper.
                 Configuration current = base.getResources().getConfiguration();
-                Configuration override = new Configuration(current);
+                Configuration override = new Configuration();
                 override.fontScale = Math.max(
                         MIN_FONT_SCALE,
                         Math.min(MAX_FONT_SCALE, current.fontScale * multiplier)
                 );
 
-                Context scaled = new FontScaleContext(base.createConfigurationContext(override));
+                Context scaled = base.createConfigurationContext(override);
+                if (scaled == null) {
+                    return base;
+                }
+
                 SCALED_ACTIVITIES.put(activity, Boolean.TRUE);
                 return scaled;
             } catch (RuntimeException exception) {
                 // Preserve normal app startup if a vendor Context rejects overrides.
                 return base;
             }
-        }
-    }
-
-    private static final class FontScaleContext extends ContextWrapper {
-        FontScaleContext(Context base) {
-            super(base);
         }
     }
 }

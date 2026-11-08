@@ -97,7 +97,7 @@ imports a game APK or complete game Lua files.
 ## Patch catalog
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.0](https://github.com/ymshin-dev/edge-window-patches/releases/tag/v1.5.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;4 patches total
+> **[v1.5.1-dev.1](https://github.com/ymshin-dev/edge-window-patches/releases/tag/v1.5.1-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;4 patches total
 <details open>
 <summary>📦 YouTube&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
