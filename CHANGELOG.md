@@ -1,3 +1,9 @@
+## [1.5.0](https://github.com/ymshin-dev/edge-window-patches/compare/v1.4.0...v1.5.0) (2026-11-08)
+
+### ✨ New Features
+
+* add universal app font scale patch ([2b1166a](https://github.com/ymshin-dev/edge-window-patches/commit/2b1166a5946cf8b40c7fd9f834a3cfa156b612cb))
+
 ## [1.5.0-dev.1](https://github.com/ymshin-dev/edge-window-patches/compare/v1.4.0...v1.5.0-dev.1) (2026-11-08)
 
 ### ✨ New Features

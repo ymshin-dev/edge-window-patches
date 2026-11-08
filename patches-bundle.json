@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-08T04:46:52",
-  "description": "## [1.5.0-dev.1](https://github.com/ymshin-dev/edge-window-patches/compare/v1.4.0...v1.5.0-dev.1) (2026-11-08)\n\n### ✨ New Features\n\n* add universal app font scale patch ([2b1166a](https://github.com/ymshin-dev/edge-window-patches/commit/2b1166a5946cf8b40c7fd9f834a3cfa156b612cb))",
-  "download_url": "https://github.com/ymshin-dev/edge-window-patches/releases/download/v1.5.0-dev.1/patches-1.5.0-dev.1.mpp",
+  "created_at": "2026-11-08T05:34:20",
+  "description": "## [1.5.0](https://github.com/ymshin-dev/edge-window-patches/compare/v1.4.0...v1.5.0) (2026-11-08)\n\n### ✨ New Features\n\n* add universal app font scale patch ([2b1166a](https://github.com/ymshin-dev/edge-window-patches/commit/2b1166a5946cf8b40c7fd9f834a3cfa156b612cb))",
+  "download_url": "https://github.com/ymshin-dev/edge-window-patches/releases/download/v1.5.0/patches-1.5.0.mpp",
   "signature_download_url": "",
-  "version": "1.5.0-dev.1"
+  "version": "1.5.0"
 }
